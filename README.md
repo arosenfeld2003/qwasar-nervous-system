@@ -7,7 +7,7 @@ A unified alarm system for smart homes and organizations. Devices communicate ov
 | Developer | Language | Primary Ownership |
 |-----------|----------|-------------------|
 | Alex      | Rust     | Event Queue, Alarm Dispatcher |
-| Co-dev    | C++      | Protocol Adapters, Processing Engine |
+| Tim       | C++      | Protocol Adapters, Processing Engine |
 
 ## System Components
 
