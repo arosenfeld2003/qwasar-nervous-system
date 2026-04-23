@@ -1,0 +1,30 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "DeviceEvent",
+  "description": "Canonical event envelope produced by C++ adapters and consumed by the Rust queue",
+  "type": "object",
+  "required": ["device_id", "protocol", "event_type", "timestamp_ms", "payload"],
+  "properties": {
+    "device_id": {
+      "type": "string",
+      "description": "Stable identifier for the originating device"
+    },
+    "protocol": {
+      "type": "string",
+      "enum": ["mqtt", "zigbee", "zwave", "http"]
+    },
+    "event_type": {
+      "type": "string",
+      "examples": ["motion_detected", "door_opened", "temperature_reading"]
+    },
+    "timestamp_ms": {
+      "type": "integer",
+      "description": "Unix epoch milliseconds (UTC)"
+    },
+    "payload": {
+      "type": "object",
+      "description": "Protocol-specific data; schema varies by event_type"
+    }
+  },
+  "additionalProperties": false
+}

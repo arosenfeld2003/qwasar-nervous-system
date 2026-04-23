@@ -1,0 +1,19 @@
+[package]
+name = "nervous-system-dispatcher"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+nervous-system-common = { path = "../common" }
+tokio = { workspace = true }
+serde = { workspace = true }
+serde_json = { workspace = true }
+tracing = { workspace = true }
+tracing-subscriber = { workspace = true }
+lapin = { workspace = true }
+futures-lite = { workspace = true }
+thiserror = { workspace = true }
+anyhow = { workspace = true }
+reqwest = { version = "0.12", features = ["json"] }
+# Temporal Rust SDK — add once workflow activities are implemented:
+# temporal-sdk = "0.1"

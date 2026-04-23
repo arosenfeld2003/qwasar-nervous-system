@@ -1,0 +1,21 @@
+# Lab spec — confidential, do not distribute
+*.pdf
+
+# Rust
+rust/target/
+rust/Cargo.lock
+
+# C++ build
+cpp/build/
+cpp/cmake-build-*/
+
+# Environment
+.env
+
+# macOS
+.DS_Store
+
+# Editor
+.vscode/
+.idea/
+*.swp
