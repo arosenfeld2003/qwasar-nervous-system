@@ -7,10 +7,6 @@ edition = "2021"
 name = "mock-device"
 path = "src/bin/mock_device.rs"
 
-[[bin]]
-name = "mock-alarm"
-path = "src/bin/mock_alarm.rs"
-
 [dependencies]
 nervous-system-common = { path = "../common" }
 tokio = { workspace = true }

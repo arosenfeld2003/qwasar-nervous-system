@@ -14,5 +14,17 @@ FetchContent_Declare(
 )
 FetchContent_MakeAvailable(nlohmann_json)
 
+# rabbitmq-c — synchronous AMQP client used by AmqpRabbitMQPublisher
+FetchContent_Declare(
+    rabbitmq-c
+    GIT_REPOSITORY https://github.com/alanxz/rabbitmq-c.git
+    GIT_TAG v0.13.0
+)
+set(BUILD_TOOLS     OFF CACHE BOOL "" FORCE)
+set(BUILD_EXAMPLES  OFF CACHE BOOL "" FORCE)
+set(BUILD_TESTS     OFF CACHE BOOL "" FORCE)
+set(ENABLE_SSL_SUPPORT OFF CACHE BOOL "" FORCE)
+FetchContent_MakeAvailable(rabbitmq-c)
+
 add_subdirectory(adapters)
 add_subdirectory(processing)
