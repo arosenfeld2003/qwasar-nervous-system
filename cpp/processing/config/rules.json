@@ -1,0 +1,52 @@
+{
+  "rules": [
+    {
+      "id": "rule-001",
+      "event_type": "motion_detected",
+      "condition": {
+        "zone": "front-door"
+      },
+      "alarm": {
+        "alarm_type": "motion",
+        "severity": "high",
+        "message": "Motion at front door"
+      }
+    },
+    {
+      "id": "rule-002",
+      "event_type": "motion_detected",
+      "condition": {
+        "zone": "back-yard"
+      },
+      "alarm": {
+        "alarm_type": "motion",
+        "severity": "medium",
+        "message": "Motion detected in back yard"
+      }
+    },
+    {
+      "id": "rule-003",
+      "event_type": "temperature_reading",
+      "condition": {
+        "payload": {
+          "celsius": null
+        }
+      },
+      "alarm": {
+        "alarm_type": "temperature_alert",
+        "severity": "medium",
+        "message": "Temperature threshold exceeded"
+      }
+    },
+    {
+      "id": "rule-004",
+      "event_type": "door_opened",
+      "condition": {},
+      "alarm": {
+        "alarm_type": "security",
+        "severity": "high",
+        "message": "Door opened event detected"
+      }
+    }
+  ]
+}
