@@ -12,12 +12,18 @@ add_library(processing_engine STATIC
 target_link_libraries(processing_engine PUBLIC processing)
 target_include_directories(processing_engine PUBLIC include)
 
-# Optional: Real RabbitMQ publisher with amqp-cpp (requires amqp-cpp library)
-# Uncomment when adding actual RabbitMQ integration
-# add_library(rabbitmq_engine STATIC
-#     src/rabbitmq_engine.cpp
-# )
-# target_link_libraries(rabbitmq_engine PUBLIC processing_engine PRIVATE amqpcpp)
+# Real AMQP publisher using rabbitmq-c
+add_library(amqp_publisher STATIC
+    src/amqp_publisher.cpp
+)
+target_link_libraries(amqp_publisher PUBLIC processing_engine PRIVATE rabbitmq)
+target_include_directories(amqp_publisher PUBLIC include)
+
+# Processing service — consumes device.events.normalized and publishes alarms
+add_executable(processing_service
+    src/main.cpp
+)
+target_link_libraries(processing_service PRIVATE amqp_publisher processing_engine)
 
 # Unit tests
 enable_testing()
