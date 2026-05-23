@@ -27,9 +27,12 @@ struct AlarmDecision {
 
 struct Rule {
     std::string id;
+    std::string description;
     std::string event_type;
-    std::string condition_json;
+    nlohmann::json condition;
     AlarmDecision alarm_template;
+    int priority = 0;
+    bool enabled = true;
 };
 
 using AlarmCallback = std::function<void(AlarmDecision)>;
