@@ -111,7 +111,7 @@ assert(messages[0].first == "alarms.dispatch");
 struct Rule {
     std::string id;                    // Unique rule identifier
     std::string event_type;            // Event type to match
-    std::string condition_json;        // JSON string of conditions (empty = any)
+    nlohmann::json condition;          // Structured JSON condition object (empty = any)
     AlarmDecision alarm_template;      // Template for alarm when matched
 };
 ```

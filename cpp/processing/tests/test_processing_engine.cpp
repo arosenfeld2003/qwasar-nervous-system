@@ -47,7 +47,7 @@ void test_load_rules() {
     Rule rule;
     rule.id = "rule-001";
     rule.event_type = "motion_detected";
-    rule.condition_json = R"({"zone": "front-door"})";
+    rule.condition = R"({"zone": "front-door"})";
     rule.alarm_template = alarm_template;
     
     std::vector<Rule> rules = {rule};
@@ -72,11 +72,11 @@ void test_match_simple_event_type() {
     Rule rule;
     rule.id = "rule-001";
     rule.event_type = "motion_detected";
-    rule.condition_json = "";
+    rule.condition = nlohmann::json::object();
     rule.alarm_template = alarm_template;
     
     engine.load_rules({rule});
-    
+
     // Create matching event
     json event = {
         {"device_id", "device-123"},
@@ -113,7 +113,7 @@ void test_no_match_wrong_event_type() {
     Rule rule;
     rule.id = "rule-001";
     rule.event_type = "motion_detected";
-    rule.condition_json = "";
+    rule.condition = nlohmann::json::object();
     rule.alarm_template = alarm_template;
     
     engine.load_rules({rule});
@@ -152,7 +152,7 @@ void test_match_with_condition() {
     Rule rule;
     rule.id = "rule-001";
     rule.event_type = "motion_detected";
-    rule.condition_json = R"({"zone": "front-door"})";
+    rule.condition = R"({"zone": "front-door"})";
     rule.alarm_template = alarm_template;
     
     engine.load_rules({rule});
@@ -190,7 +190,7 @@ void test_no_match_condition_mismatch() {
     Rule rule;
     rule.id = "rule-001";
     rule.event_type = "motion_detected";
-    rule.condition_json = R"({"zone": "front-door"})";
+    rule.condition = R"({"zone": "front-door"})";
     rule.alarm_template = alarm_template;
     
     engine.load_rules({rule});
@@ -228,7 +228,7 @@ void test_multiple_rules_multiple_matches() {
     Rule rule1;
     rule1.id = "rule-001";
     rule1.event_type = "motion_detected";
-    rule1.condition_json = "";
+    rule1.condition = nlohmann::json::object();
     rule1.alarm_template = alarm_template_1;
     
     AlarmDecision alarm_template_2;
@@ -239,7 +239,7 @@ void test_multiple_rules_multiple_matches() {
     Rule rule2;
     rule2.id = "rule-002";
     rule2.event_type = "motion_detected";
-    rule2.condition_json = "";
+    rule2.condition = nlohmann::json::object();
     rule2.alarm_template = alarm_template_2;
     
     engine.load_rules({rule1, rule2});
@@ -278,7 +278,7 @@ void test_alarm_decision_contains_device_id() {
     Rule rule;
     rule.id = "rule-001";
     rule.event_type = "motion_detected";
-    rule.condition_json = "";
+    rule.condition = nlohmann::json::object();
     rule.alarm_template = alarm_template;
     
     engine.load_rules({rule});
@@ -316,7 +316,7 @@ void test_alarm_decision_contains_timestamp() {
     Rule rule;
     rule.id = "rule-001";
     rule.event_type = "motion_detected";
-    rule.condition_json = "";
+    rule.condition = nlohmann::json::object();
     rule.alarm_template = alarm_template;
     
     engine.load_rules({rule});
@@ -355,7 +355,7 @@ void test_event_without_timestamp_gets_current_time() {
     Rule rule;
     rule.id = "rule-001";
     rule.event_type = "motion_detected";
-    rule.condition_json = "";
+    rule.condition = nlohmann::json::object();
     rule.alarm_template = alarm_template;
     
     engine.load_rules({rule});
@@ -400,7 +400,7 @@ void test_callback_receives_all_alarm_details() {
     Rule rule;
     rule.id = "rule-001";
     rule.event_type = "motion_detected";
-    rule.condition_json = "";
+    rule.condition = nlohmann::json::object();
     rule.alarm_template = alarm_template;
     
     engine.load_rules({rule});

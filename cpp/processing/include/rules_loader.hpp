@@ -32,14 +32,17 @@ public:
             }
             
             rule.id = rule_json["id"].get<std::string>();
+            rule.description = rule_json.value("description", std::string());
             rule.event_type = rule_json["event_type"].get<std::string>();
             
-            // Serialize condition to JSON string
             if (rule_json.contains("condition") && rule_json["condition"].is_object()) {
-                rule.condition_json = rule_json["condition"].dump();
+                rule.condition = rule_json["condition"];
             } else {
-                rule.condition_json = "";
+                rule.condition = nlohmann::json::object();
             }
+            
+            rule.priority = rule_json.value("priority", 0);
+            rule.enabled = rule_json.value("enabled", true);
             
             // Parse alarm template
             const auto& alarm_json = rule_json["alarm"];
@@ -80,14 +83,17 @@ public:
             }
             
             rule.id = rule_json["id"].get<std::string>();
+            rule.description = rule_json.value("description", std::string());
             rule.event_type = rule_json["event_type"].get<std::string>();
             
-            // Serialize condition to JSON string
             if (rule_json.contains("condition") && rule_json["condition"].is_object()) {
-                rule.condition_json = rule_json["condition"].dump();
+                rule.condition = rule_json["condition"];
             } else {
-                rule.condition_json = "";
+                rule.condition = nlohmann::json::object();
             }
+            
+            rule.priority = rule_json.value("priority", 0);
+            rule.enabled = rule_json.value("enabled", true);
             
             // Parse alarm template
             const auto& alarm_json = rule_json["alarm"];
