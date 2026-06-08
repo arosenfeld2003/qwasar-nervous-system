@@ -26,16 +26,12 @@
     },
     {
       "id": "rule-003",
-      "event_type": "temperature_reading",
-      "condition": {
-        "payload": {
-          "celsius": null
-        }
-      },
+      "event_type": "smoke_detected",
+      "condition": {},
       "alarm": {
-        "alarm_type": "temperature_alert",
-        "severity": "medium",
-        "message": "Temperature threshold exceeded"
+        "alarm_type": "fire",
+        "severity": "critical",
+        "message": "Smoke detected — possible fire"
       }
     },
     {
@@ -43,9 +39,19 @@
       "event_type": "door_opened",
       "condition": {},
       "alarm": {
-        "alarm_type": "security",
+        "alarm_type": "intrusion",
         "severity": "high",
         "message": "Door opened event detected"
+      }
+    },
+    {
+      "id": "rule-005",
+      "event_type": "flood_detected",
+      "condition": {},
+      "alarm": {
+        "alarm_type": "flood",
+        "severity": "high",
+        "message": "Flood sensor triggered"
       }
     }
   ]
