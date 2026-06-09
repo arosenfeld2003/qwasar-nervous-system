@@ -4,6 +4,7 @@ members = [
     "queue",
     "dispatcher",
     "mock-publisher",
+    "demo-cli",
 ]
 resolver = "2"
 
@@ -21,3 +22,6 @@ mongodb = "3"
 reqwest = { version = "0.12", features = ["json"] }
 lettre = { version = "0.11", features = ["tokio1", "tokio1-native-tls"] }
 dotenvy = "0.15"
+clap = { version = "4", features = ["derive"] }
+axum = "0.7"
+uuid = { version = "1", features = ["v4", "serde"] }

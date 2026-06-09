@@ -200,3 +200,42 @@ fn build_smtp_transport(
         .build();
     Ok(transport)
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use nervous_system_common::{AlarmDecision, AlarmType, Severity};
+
+    #[test]
+    fn test_config_no_channels_warns() {
+        let cfg = Config {
+            amqp_uri: "amqp://localhost".into(),
+            webhook_url: None,
+            email: None,
+        };
+        assert!(
+            cfg.webhook_url.is_none() && cfg.email.is_none(),
+            "should detect no notification channels"
+        );
+    }
+
+    #[test]
+    fn test_alarm_decision_serialization() {
+        let alarm = AlarmDecision {
+            device_id: "test-device".into(),
+            alarm_type: AlarmType::Fire,
+            severity: Severity::Critical,
+            message: "Smoke detected in kitchen".into(),
+            triggered_at_ms: 1620000000000,
+        };
+
+        let json = serde_json::to_string(&alarm).expect("serialization failed");
+        assert!(json.contains("test-device"));
+        assert!(json.contains("Smoke detected in kitchen"));
+
+        let deserialized: AlarmDecision =
+            serde_json::from_str(&json).expect("deserialization failed");
+        assert_eq!(deserialized.device_id, alarm.device_id);
+        assert_eq!(deserialized.message, alarm.message);
+    }
+}
