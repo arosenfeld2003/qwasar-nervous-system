@@ -117,7 +117,6 @@ Replace `<TYPE>` with:
 ## Next Steps
 
 - **Full demo guide:** Read `DEMO.md`
-- **Technical details:** Read `IMPLEMENTATION_SUMMARY_DEMO.md`
 - **Architecture:** Read `docs/architecture.md`
 - **Add custom rules:** Edit `cpp/processing/config/rules.json`
 
