@@ -10,7 +10,6 @@ use tracing::{error, info, warn};
 
 const ALARM_QUEUE: &str = "alarms.dispatch";
 
-// All dispatcher configuration lives here, loaded once at startup.
 struct Config {
     amqp_uri: String,
     webhook_url: Option<String>,

@@ -1,55 +1,38 @@
 # Technology Choices
 
-## Message Broker
+## Message Broker: RabbitMQ
 
-| Option | Pros | Cons | Verdict |
-|--------|------|------|---------|
-| **RabbitMQ** | Simple setup, AMQP standard, great for task queues | Less suited for log-style replay | Good default for this lab |
-| **Kafka** | High throughput, log retention, replay events | Heavier ops, Zookeeper dependency | Better if event replay is needed |
-| **Redis Streams** | Lightweight, easy local dev | Less mature ecosystem | Good for prototyping |
-
-**Start with RabbitMQ**; the AMQP protocol has solid client libraries for both Rust (`lapin`) and C++ (`amqpcpp`).
+AMQP protocol with solid Rust (`lapin`) and C++ (`amqpcpp`) clients. Supports the five queue topics (raw events, normalized, alarms) with simple topic-based routing.
 
 ## Databases
 
-| Purpose | Choice | Rationale |
-|---------|--------|-----------|
-| Event log / history | **MongoDB** | Schemaless; events naturally fit document model |
-| Rule store / config | **Redis** | Fast key-value; rules hot-reloaded without restart |
-| Time-series metrics | **DynamoDB** or **InfluxDB** | TTL support, optimized for time-range queries |
+| Purpose | Technology | Rationale |
+|---------|-----------|-----------|
+| Event History | **MongoDB** | Schemaless documents fit event logs naturally |
+| Rule Configuration | **Redis** | Fast KV store for rule deployment and caching |
 
-## Protocol Libraries (C++)
+## C++ Protocol Libraries
 
-| Protocol | Library | Notes |
-|----------|---------|-------|
-| MQTT     | `Paho MQTT C++` | Apache, well-maintained |
-| Zigbee   | `zigpy` C bindings or ZBOSS SDK | May require hardware dongle for real testing |
-| Z-Wave   | `OpenZWave` | Mature, active community |
-| HTTP     | `cpp-httplib` or `Boost.Beast` | cpp-httplib is simpler for adapters |
+| Protocol | Library |
+|----------|---------|
+| MQTT | Paho MQTT C++ |
+| Zigbee | ZBOSS SDK or zigpy C bindings |
+| Z-Wave | OpenZWave |
+| HTTP | cpp-httplib |
 
-## Rust Crates (Event Queue + Dispatcher)
+## Rust Crates
 
-| Purpose | Crate | Notes |
-|---------|-------|-------|
-| Async runtime | `tokio` | Industry standard |
-| AMQP (RabbitMQ) | `lapin` | Tokio-native |
-| JSON | `serde_json` | Pairs with `serde` derive macros |
-| HTTP alarms | `reqwest` | Async HTTP client |
-| Email alarms | `lettre` | SMTP + async support |
-| Config | `config` + `serde` | Layered config (file + env) |
-| Logging | `tracing` | Structured async-aware logs |
+| Purpose | Crate |
+|---------|-------|
+| Async Runtime | `tokio` |
+| RabbitMQ | `lapin` (Tokio-native) |
+| JSON | `serde` + `serde_json` |
+| HTTP Webhooks | `reqwest` |
+| Email Alerts | `lettre` |
+| Logging | `tracing` |
 
 ## Infrastructure
 
-| Tool | Purpose |
-|------|---------|
-| Docker + Docker Compose | Local dev: broker, databases, services |
-| Kubernetes (stretch goal) | Production-like deployment |
-| GitHub Actions | CI: build + test both C++ and Rust |
-
-## Simulating IoT Devices (for development)
-
-Since physical Zigbee/Z-Wave hardware isn't required for the lab, consider:
-- **MQTT**: `mosquitto_pub` CLI to publish mock events
-- **HTTP**: `curl` or a small Python script to POST events
-- **Zigbee/Z-Wave**: Mock adapter in C++ that generates events on a timer
+- **Docker Compose**: Local dev (RabbitMQ, MongoDB, Redis, PostgreSQL for Temporal)
+- **CMake**: C++ builds
+- **Cargo**: Rust builds and tests

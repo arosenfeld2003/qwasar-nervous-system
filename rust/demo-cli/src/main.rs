@@ -83,44 +83,9 @@ fn get_events() -> Vec<DeviceEvent> {
 }
 
 fn get_event_by_type(event_type: &str) -> Option<DeviceEvent> {
-    match event_type {
-        "motion_detected" => Some(DeviceEvent {
-            device_id: "sim-mqtt-001".into(),
-            protocol: Protocol::Mqtt,
-            event_type: "motion_detected".into(),
-            timestamp_ms: now_ms(),
-            payload: serde_json::json!({"zone": "front-door"}),
-        }),
-        "door_opened" => Some(DeviceEvent {
-            device_id: "sim-zigbee-001".into(),
-            protocol: Protocol::Zigbee,
-            event_type: "door_opened".into(),
-            timestamp_ms: now_ms(),
-            payload: serde_json::json!({"door": "main-entrance"}),
-        }),
-        "temperature_reading" => Some(DeviceEvent {
-            device_id: "sim-http-001".into(),
-            protocol: Protocol::Http,
-            event_type: "temperature_reading".into(),
-            timestamp_ms: now_ms(),
-            payload: serde_json::json!({"celsius": 22.5}),
-        }),
-        "smoke_detected" => Some(DeviceEvent {
-            device_id: "sim-mqtt-002".into(),
-            protocol: Protocol::Mqtt,
-            event_type: "smoke_detected".into(),
-            timestamp_ms: now_ms(),
-            payload: serde_json::json!({"zone": "kitchen"}),
-        }),
-        "flood_detected" => Some(DeviceEvent {
-            device_id: "sim-zigbee-002".into(),
-            protocol: Protocol::Zigbee,
-            event_type: "flood_detected".into(),
-            timestamp_ms: now_ms(),
-            payload: serde_json::json!({"zone": "basement", "water_level_mm": 12}),
-        }),
-        _ => None,
-    }
+    get_events()
+        .into_iter()
+        .find(|e| e.event_type == event_type)
 }
 
 #[tokio::main]
