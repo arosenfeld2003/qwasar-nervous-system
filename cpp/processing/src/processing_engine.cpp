@@ -51,6 +51,8 @@ void ProcessingEngineImpl::evaluate(const nlohmann::json& event, AlarmCallback o
     }
 }
 
+}  // namespace nervous_system
+
 namespace {
 
 const nlohmann::json* resolve_json_path(const nlohmann::json& root, const std::string& path) {
@@ -194,6 +196,10 @@ bool compare_condition_value(const nlohmann::json& actual, const nlohmann::json&
 
     return actual == expected;
 }
+
+}  // anonymous namespace
+
+namespace nervous_system {
 
 bool ProcessingEngineImpl::matches_rule(const nlohmann::json& event, const Rule& rule) const {
     if (!rule.enabled) {

@@ -133,3 +133,32 @@ fn now_ms() -> u64 {
         .unwrap()
         .as_millis() as u64
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use nervous_system_common::Protocol;
+
+    #[test]
+    fn test_event_deserialization() {
+        let json = r#"{
+            "device_id": "test-device",
+            "protocol": "mqtt",
+            "event_type": "motion_detected",
+            "timestamp_ms": 1620000000000,
+            "payload": {"zone": "entry"}
+        }"#;
+
+        let event: DeviceEvent = serde_json::from_str(json).expect("deserialization failed");
+        assert_eq!(event.device_id, "test-device");
+        assert_eq!(event.event_type, "motion_detected");
+        assert!(matches!(event.protocol, Protocol::Mqtt));
+    }
+
+    #[test]
+    fn test_invalid_event_rejected() {
+        let invalid_json = r#"{"incomplete": "data"}"#;
+        let result: Result<DeviceEvent, _> = serde_json::from_str(invalid_json);
+        assert!(result.is_err(), "should reject invalid event");
+    }
+}

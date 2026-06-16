@@ -26,22 +26,8 @@ set(BUILD_TESTS     OFF CACHE BOOL "" FORCE)
 set(ENABLE_SSL_SUPPORT OFF CACHE BOOL "" FORCE)
 FetchContent_MakeAvailable(rabbitmq-c)
 
+# Paho MQTT is optional — only needed for protocol adapters, not the processing engine
 find_package(PahoMqttCpp QUIET)
-if (NOT PahoMqttCpp_FOUND)
-    FetchContent_Declare(
-        paho_mqtt_c
-        GIT_REPOSITORY https://github.com/eclipse/paho.mqtt.c.git
-        GIT_TAG v1.4.0
-    )
-    FetchContent_MakeAvailable(paho_mqtt_c)
-
-    FetchContent_Declare(
-        paho_mqtt_cpp
-        GIT_REPOSITORY https://github.com/eclipse/paho.mqtt.cpp.git
-        GIT_TAG v1.3.1
-    )
-    FetchContent_MakeAvailable(paho_mqtt_cpp)
-endif()
 
 FetchContent_Declare(
     httplib
@@ -50,6 +36,11 @@ FetchContent_Declare(
 )
 FetchContent_MakeAvailable(httplib)
 
-add_subdirectory(adapters)
+# Only build adapters if Paho MQTT is available
+if (PahoMqttCpp_FOUND)
+    add_subdirectory(adapters)
+endif()
+
+# Always build processing engine (uses only rabbitmq-c)
 add_subdirectory(processing)
 

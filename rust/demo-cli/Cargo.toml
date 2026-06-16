@@ -1,0 +1,29 @@
+[package]
+name = "demo-cli"
+version = "0.1.0"
+edition = "2021"
+default-run = "demo"
+
+[[bin]]
+name = "demo"
+path = "src/main.rs"
+
+[[bin]]
+name = "webhook_listener"
+path = "src/bin/webhook_listener.rs"
+
+[dependencies]
+nervous-system-common = { path = "../common" }
+tokio = { workspace = true }
+lapin = { workspace = true }
+serde = { workspace = true }
+serde_json = { workspace = true }
+tracing = { workspace = true }
+tracing-subscriber = { workspace = true }
+clap = { workspace = true }
+axum = { workspace = true }
+dotenvy = { workspace = true }
+uuid = { workspace = true }
+chrono = { version = "0.4", features = ["serde"] }
+anyhow = { workspace = true }
+futures-lite = { workspace = true }

@@ -1,4 +1,4 @@
-.PHONY: dev dev-down dev-logs build-rust test-rust check-rust fmt-rust build-cpp
+.PHONY: dev dev-down dev-logs build-rust test-rust check-rust fmt-rust build-cpp clean-cpp demo test-all webhook-listener
 
 RUST_DIR := rust
 CPP_BUILD_DIR := cpp/build
@@ -38,3 +38,32 @@ build-cpp:
 
 clean-cpp:
 	rm -rf $(CPP_BUILD_DIR)
+
+# ── Demo & Testing ────────────────────────────────────────────────────────
+demo:
+	@echo "🚀 Starting Nervous System Demo"
+	@echo "================================"
+	@echo ""
+	@echo "1. Starting infrastructure (RabbitMQ, MongoDB)..."
+	docker compose -f docker/docker-compose.yml up -d rabbitmq mongodb
+	@sleep 3
+	@echo ""
+	@bash scripts/start-demo.sh
+
+webhook-listener:
+	@echo "📡 Starting webhook listener on http://0.0.0.0:8099/alarm"
+	cargo run --manifest-path $(RUST_DIR)/Cargo.toml -p demo-cli --bin webhook_listener
+
+test-all: test-rust
+	@echo ""
+	@echo "Running C++ tests (if cmake available)..."
+	@if command -v cmake > /dev/null; then \
+		$(MAKE) build-cpp > /dev/null && \
+		echo "Running C++ unit tests..." && \
+		./$(CPP_BUILD_DIR)/processing/test_processing_engine && \
+		echo "✅ C++ tests passed!"; \
+	else \
+		echo "⚠️  cmake not found, skipping C++ tests"; \
+	fi
+	@echo ""
+	@echo "✅ Rust tests passed!"
