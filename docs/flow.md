@@ -3,7 +3,6 @@
 ## System Architecture
 
 ```mermaid
-%%{init: {"theme": "default", "themeVariables": {"fontSize": "18px"}}}%%
 flowchart TD
     CLI["🖥️  demo-cli\n(Rust)"]
 
@@ -37,7 +36,6 @@ flowchart TD
 ## Phase-by-Phase: smoke_detected
 
 ```mermaid
-%%{init: {"theme": "default", "themeVariables": {"fontSize": "18px"}}}%%
 sequenceDiagram
     actor Dev
     participant CLI as demo-cli
