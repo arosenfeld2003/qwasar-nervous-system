@@ -8,6 +8,7 @@ rust/Cargo.lock
 # C++ build
 cpp/build/
 cpp/cmake-build-*/
+cpp/.cache/
 
 # Environment
 .env
