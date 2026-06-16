@@ -1,4 +1,4 @@
-.PHONY: dev dev-down dev-logs build-rust test-rust check-rust fmt-rust build-cpp clean-cpp demo test-all webhook-listener
+.PHONY: dev dev-down dev-logs build-rust test-rust check-rust fmt-rust build-cpp clean-cpp services stop demo test-all webhook-listener
 
 RUST_DIR := rust
 CPP_BUILD_DIR := cpp/build
@@ -40,6 +40,21 @@ clean-cpp:
 	rm -rf $(CPP_BUILD_DIR)
 
 # ── Demo & Testing ────────────────────────────────────────────────────────
+services:
+	@echo "Starting infrastructure (RabbitMQ, MongoDB)..."
+	docker compose -f docker/docker-compose.yml up -d rabbitmq mongodb
+	@sleep 3
+	@bash scripts/start-services.sh
+
+stop:
+	@echo "Stopping pipeline services..."
+	@pkill -f "nervous-system-queue" 2>/dev/null || true
+	@pkill -f "nervous-system-dispatcher" 2>/dev/null || true
+	@pkill -f "processing_service" 2>/dev/null || true
+	@echo "Stopping Docker services..."
+	docker compose -f docker/docker-compose.yml down
+	@echo "✅ All services stopped."
+
 demo:
 	@echo "🚀 Starting Nervous System Demo"
 	@echo "================================"
