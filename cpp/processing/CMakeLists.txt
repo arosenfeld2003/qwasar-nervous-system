@@ -23,7 +23,7 @@ target_include_directories(amqp_publisher PUBLIC include)
 add_executable(processing_service
     src/main.cpp
 )
-target_link_libraries(processing_service PRIVATE amqp_publisher processing_engine)
+target_link_libraries(processing_service PRIVATE amqp_publisher processing_engine rabbitmq)
 
 # Unit tests
 enable_testing()
