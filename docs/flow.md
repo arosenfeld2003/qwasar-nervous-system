@@ -49,8 +49,9 @@ sequenceDiagram
     Note over CLI,Q: Phase 1 · Injection → Validation
 
     CLI->>Q: device.events.raw<br/>{ event_type: smoke_detected, device: sim-mqtt-002 }
-    Q->>Q: validate + persist to MongoDB
-    Q->>PE: device.events.normalized
+    Q->>Q: deserialize into DeviceEvent struct<br/>reject + nack if schema invalid
+    Q->>Q: insert doc into nervous_system.events<br/>failure logged but event is not dropped
+    Q->>PE: device.events.normalized<br/>forward_event() — delivery_mode=2 (persistent)
 
     Note over PE,D: Phase 2 · Rule Evaluation → Dispatch
 
@@ -59,6 +60,33 @@ sequenceDiagram
     D->>WH: POST /alarm
     WH-->>Dev: Fire / Critical / sim-mqtt-002
 ```
+
+**Queue service — persist & republish** (`rust/queue/src/main.rs`):
+
+```rust
+// persist to MongoDB — failure is logged but does not drop the event
+if let Err(e) = events_col.insert_one(doc).await {
+    warn!("MongoDB insert failed (event not dropped): {}", e);
+}
+
+forward_event(&publish_channel, &event).await?;
+delivery.ack(BasicAckOptions::default()).await?;
+
+// ---
+
+// forward_event: republish the same DeviceEvent to device.events.normalized
+// delivery_mode=2 marks the message as persistent on the broker
+async fn forward_event(channel: &lapin::Channel, event: &DeviceEvent) -> Result<()> {
+    let payload = serde_json::to_vec(event)?;
+    channel
+        .basic_publish("", OUTBOUND_QUEUE, BasicPublishOptions::default(),
+            &payload, lapin::BasicProperties::default().with_delivery_mode(2))
+        .await??;
+    Ok(())
+}
+```
+
+The event is acknowledged only after both the MongoDB write and the republish succeed. If either fails, the broker redelivers the message.
 
 ---
 
