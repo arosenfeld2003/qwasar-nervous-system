@@ -4,7 +4,7 @@
 
 ```mermaid
 flowchart TD
-    CLI["🖥️  demo-cli\n(Rust)"]
+    CLI["demo-cli\n(Rust)"]
 
     subgraph BROKER["RabbitMQ  (port 5672)"]
         RAW["device.events.raw"]
@@ -19,7 +19,7 @@ flowchart TD
     end
 
     DB[("MongoDB\n:27017")]
-    WH["📡 Webhook Listener\nlocalhost:8099/alarm"]
+    WH["Webhook Listener\nlocalhost:8099/alarm"]
 
     CLI -->|"publish event"| RAW
     RAW -->|"consume"| Q
@@ -57,7 +57,7 @@ sequenceDiagram
     PE->>PE: rule-003 matches smoke_detected<br/>→ Fire / Critical
     PE->>D: alarms.dispatch<br/>{ alarm_type: Fire, severity: Critical }
     D->>WH: POST /alarm
-    WH-->>Dev: 💌 Fire · Critical · sim-mqtt-002
+    WH-->>Dev: Fire / Critical / sim-mqtt-002
 ```
 
 ---
