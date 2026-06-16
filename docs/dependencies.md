@@ -62,7 +62,7 @@ Synchronous C AMQP client. Used by the processing engine to consume from `device
 Header-only JSON library. Used throughout the C++ processing engine to parse inbound events and serialize alarm decisions. Chosen for its simple API (`json["key"]`) and single-header distribution.
 
 ### `cpp-httplib` (optional)
-Header-only HTTP server/client library. Used by the C++ protocol adapters. Not required for the processing engine.
+Header-only HTTP server/client library. Used by the C++ HTTP protocol adapter — the component that would receive events from HTTP-speaking devices and forward them to `device.events.raw`. Not required for the processing engine or the current demo, where `demo-cli` plays this role in software.
 
 ### `Paho MQTT C++` (optional)
-MQTT protocol adapter library. Only built if found on the system (`find_package(PahoMqttCpp QUIET)`). Not required for the core demo pipeline.
+MQTT protocol client library. Used by the C++ MQTT adapter — the component that would subscribe to an MQTT broker on a physical device (e.g. a Raspberry Pi with a Zigbee dongle running `zigbee2mqtt`) and publish received events to RabbitMQ. Only built if found on the system (`find_package(PahoMqttCpp QUIET)`). Not required for the current demo pipeline, where `demo-cli` simulates device events directly. Becomes necessary when connecting real hardware.
