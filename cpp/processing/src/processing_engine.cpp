@@ -258,6 +258,9 @@ bool ProcessingEngineImpl::condition_matches(const nlohmann::json& event,
 
         const nlohmann::json* actual_value = resolve_json_path(event, key);
         if (!actual_value) {
+            actual_value = resolve_json_path(event, "payload." + key);
+        }
+        if (!actual_value) {
             return false;
         }
 
