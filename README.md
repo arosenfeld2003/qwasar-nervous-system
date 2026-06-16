@@ -121,6 +121,7 @@ Runs all Rust unit tests. C++ tests require cmake.
 
 ## Documentation
 
+- [End-to-End Flow Diagram](docs/flow.md)
 - [Architecture & Design Decisions](docs/architecture.md)
 - [Language Split & Integration](docs/language-split.md)
 - [Technology Choices](docs/technologies.md)
